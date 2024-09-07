@@ -2,10 +2,11 @@ library(Seurat)
 library(ggplot2)
 
 # Set working directory
-results_folder <- '/R/nanostring7/work1'
+results_folder <- "./results"  
+seurat_object_path <- "./data/seurat_object.Rds"
 
 # Load Seurat object
-seu.obj <- readRDS("/R/nanostring7/6 Analysis/Data objects/seurat_object.Rds")
+seu.obj <- readRDS(seurat_object_path)
 
 # Update metadata
 seu.obj@meta.data$nb_clus_4[which(seu.obj@meta.data$nb_clus_4 == "monocyte")] <- "neutrophil"
