@@ -6,10 +6,10 @@ plan("multisession", workers = 10)
 DiscretePalette(32, palette = NULL, shuffle = FALSE)
 
 # set working directory
-results_folder = '/R/nanostring7/work4'
+results_folder = './results'
 
 # set object
-seu.obj <- readRDS("/R/nanostring7/6 Analysis/Data objects/seurat_object.Rds")
+seu.obj <- readRDS("./data/seurat_object.Rds")
 
 
 # change the name of "monocyte" in nb_clus_4 to "neutrophil".
