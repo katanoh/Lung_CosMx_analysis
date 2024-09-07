@@ -11,7 +11,7 @@ library(SeuratDisk)
 library(InSituCor)
 
 # Load Giotto object
-load(".data/complete_giotto_object_PostAnalysis.RData")
+load("./data/complete_giotto_object_PostAnalysis.RData")
 
 #change the name of "monocyte" in nb_clus_4 to "neutrophil".
 gem@cell_metadata$rna$nb_clus_4[which(gem@cell_metadata$rna$nb_clus_4 == "monocyte")] <- "neutrophil"
