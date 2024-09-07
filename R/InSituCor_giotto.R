@@ -99,7 +99,7 @@ step1 <- calcSpatialCor(counts = norm,
                         max_cells = 10000,
                         verbose = FALSE)
 
-saveRDS(step1, file = "/R/nanostring7/insitucor/processed_data/step1.RDS")
+saveRDS(step1, file = "./processed_data/step1.RDS")
 
 
 # derive Modules
@@ -111,14 +111,14 @@ modules <- defineModules(condcor = step1$condcor,
                          corthresh = 0.1, 
                          min_module_cor = 0.1,
                          gene_weighting_rule = "inverse_sqrt")
-saveRDS(modules, file = "/R/nanostring7/insitucor/processed_data/modules.RDS")
+saveRDS(modules, file = "./processed_data/modules.RDS")
 
 
 # get scores:
 scores <- scoreModules(counts = norm,
                        weights = modules$weights,
                        neighbors = step1$neighbors)
-saveRDS(scores, file = "/R/nanostring7/insitucor/processed_data/scores.RDS")
+saveRDS(scores, file = "./processed_data/scores.RDS")
 
 
 #### attribution analysis -----------------------------------------------
@@ -133,7 +133,7 @@ attribution <- cellTypeAttribution(
   nsub = 1000,
   verbose = TRUE)
 toc()
-saveRDS(attribution, file = "/R/nanostring7/insitucor/processed_data/attribution.RDS")
+saveRDS(attribution, file = "./processed_data/attribution.RDS")
 
 
 #### plots for manuscript --------------------------------------------
@@ -149,7 +149,7 @@ lines(c(2.1,3.1), c(-0.2,-0.2))
 text(2.6,-0.3,"1 mm", cex = 0.8)
 dev.off()
 
-svg("/R/nanostring7/insitucor/results/fig 1a - cell type legend.svg", width = 3, height = 3)
+svg("./results/fig 1a - cell type legend.svg", width = 3, height = 3)
 par(mar = c(0,0,0,0))
 frame()
 o = order(names(cols), decreasing = F)
@@ -171,7 +171,7 @@ use = ((x_coord > x_ind - 0.1) & (x_coord < x_ind + 0.1)) &
 ind.neighbors = which(step1$neighbors[ind, ] > 1e-6)
 
 # Create SVG for nearest neighbors plot
-svg("/R/nanostring7/insitucor/results/fig 1b - nearest neighbors.svg", width = 5, height = 5)
+svg("./results/fig 1b - nearest neighbors.svg", width = 5, height = 5)
 par(mar = c(0, 0, 0, 0))
 
 # Plot points based on the 'use' condition
@@ -199,7 +199,7 @@ mat = step1$env[subr, subc]
 mat = sweep(mat,2,apply(mat,2,max), "/")
 p1 = pheatmap(mat)
 dev.off()
-png("/R/nanostring7/insitucor/results/fig 1c - env matrix.png", width = 3, height = 3, units ="in",res = 400)
+png("./results/fig 1c - env matrix.png", width = 3, height = 3, units ="in",res = 400)
 pheatmap(mat[p1$tree_row$order, p1$tree_col$order], 
          cluster_rows = F, cluster_cols = F,
          show_rownames = F, show_colnames = F, legend = FALSE,
@@ -208,14 +208,14 @@ dev.off()
 
 # heatmap of cormat
 rawcor = cor(step1$env)
-saveRDS(rawcor, file = "/R/nanostring7/insitucor/processed_data/rawcor.RDS")
+saveRDS(rawcor, file = "./processed_data/rawcor.RDS")
 
 
 set.seed(0)
 inds = sample(1:nrow(rawcor), 300)
 
 hc1 = hclust(dist(rawcor[inds, inds]))
-png("/R/nanostring7/insitucor/results/fig 1e - raw cormat.png", width = 3, height = 3, units ="in",res = 400)
+png("./results/fig 1e - raw cormat.png", width = 3, height = 3, units ="in",res = 400)
 pheatmap(rawcor[inds, inds][hc1$order, hc1$order], cluster_rows = F, cluster_cols = F,
          col = colorRampPalette(c("darkblue",'blue', "white","red","darkred"))(100),
          breaks = seq(-0.6,0.6,length.out = 101),
@@ -226,7 +226,7 @@ dev.off()
 
 # heatmap of cond cor:
 hc2 = hclust(dist(step1$condcor[inds, inds]))
-png("/R/nanostring7/insitucor/results/fig 1f - conditional cormat.png", width = 3, height = 3, units ="in",res = 400)
+png("./results/fig 1f - conditional cormat.png", width = 3, height = 3, units ="in",res = 400)
 pheatmap(step1$condcor[inds, inds][hc2$order, hc2$order], cluster_rows = F, cluster_cols = F,
          col = colorRampPalette(c("darkblue",'blue', "white","red","darkred"))(100),
          breaks = seq(-0.6,0.6,length.out = 101),
@@ -241,7 +241,7 @@ condmat[, "total counts"] = condmat[, "total counts"] / mean(condmat[, "total co
 mat = condmat[1:500, order(colMeans(condmat[1:500, ]), decreasing = T)[1:20]]
 p1 = pheatmap(mat)
 dev.off()
-png("/R/nanostring7/insitucor/results/fig 1d - conditioning matrix.png", width = 3, height = 3, units ="in",res = 400)
+png("./results/fig 1d - conditioning matrix.png", width = 3, height = 3, units ="in",res = 400)
 pheatmap(mat[p1$tree_row$order, p1$tree_col$order], cluster_rows = F, cluster_cols = F,
          #fontsize_col = 6,
          show_colnames = F,
@@ -284,7 +284,7 @@ unroundedstep1 <- calcSpatialCor(counts = norm,
                                  roundcortozero = 1e-2,
                                  max_cells = 10000,
                                  verbose = FALSE)
-saveRDS(unroundedstep1, file = "/R/nanostring7/insitucor/processed_data/unroundedstep1.RDS")
+saveRDS(unroundedstep1, file = "./processed_data/unroundedstep1.RDS")
 
 
 
@@ -305,7 +305,7 @@ for (i in 1:length(gpairs)) {
 for (i in 1:length(gpairs)) {
   print(step1$condcor[gpairs[[i]], gpairs[[i]]])
 }
-#次はなぜかできない。
+#..
 for (i in 1:length(gpairs)) {
   print(markerstep1$condcor[gpairs[[i]], gpairs[[i]]])
 }
@@ -370,7 +370,7 @@ dev.off()
 
 ### spatial plots -----------------------
 name = "FN1_SPP1_MARCO_3"
-png(paste0("/R/nanostring7/insitucor/results/fig 1h - ", name, "env scores.png"), width = 6, height = 4, units= "in", res = 2400)
+png(paste0("./results/fig 1h - ", name, "env scores.png"), width = 6, height = 4, units= "in", res = 2400)
 par(mar = c(0,0,0,0))
 plot(xy, pch =16, asp = 1, cex = 0.2, ylim = c(-7,0),
      col = viridis_pal(option = "B")(101)[
@@ -382,7 +382,7 @@ text(2.6,-0.3,"1 mm", cex = 0.8)
 rect(1.4, 2.5, 3, 4.5, border = "dodgerblue1", lwd = 2)
 dev.off()
 
-png(paste0("/R/nanostring7/insitucor/results/fig 1i - ", name, "env scores zoom1.png"), width = 8, height = 5, units= "in", res = 300)
+png(paste0("./results/fig 1i - ", name, "env scores zoom1.png"), width = 8, height = 5, units= "in", res = 300)
 par(mar = c(0,0,0,0))
 plot(xy, pch =16, asp = 1, 
      xlim = c(0.2,5), ylim = c(-3.5,-0.2),
@@ -391,7 +391,7 @@ plot(xy, pch =16, asp = 1,
        1 + round(100 * pmin(scores$scores_env[, name] / quantile(scores$scores_env[, name], 0.95), 1))],     xaxt = "n", yaxt = "n", xlab = "", ylab = "")
 dev.off()
 
-png(paste0("/R/nanostring7/insitucor/results/fig 1j - ", name, "sc scores zoom.png"), 
+png(paste0("./results/fig 1j - ", name, "sc scores zoom.png"), 
     width = 7, height = 5, units= "in", res = 300)
 par(mar = c(0,0,0,0))
 plot(xy, pch =16, asp = 1, 
@@ -406,19 +406,19 @@ dev.off()
 
 ### network diagram ------------------
 
-svg("/R/nanostring7/insitucor/results/fig 1k - network.svg")
+svg("./results/fig 1k - network.svg")
 par(mar = c(0,0,0,0))
 plotCorrelationNetwork(x = step1$condcor,
                        modules = modules$weightsdf, show_gene_names = F)
 dev.off()
 
-svg("/R/nanostring7/insitucor/results/fig 1k - network v2.svg", width = 8, height = 8)
+svg("./results/fig 1k - network v2.svg", width = 8, height = 8)
 par(mar = c(0,0,0,0))
 plotCorrelationNetwork(x = step1$condcor,
                        modules = modules$weightsdf, show_gene_names = F, vertex_size = 3.5)
 dev.off()
 
-pdf("/R/nanostring7/insitucor/results/fig 1k - network w names.pdf")
+pdf("./results/fig 1k - network w names.pdf")
 par(mar = c(0,0,0,0))
 plotCorrelationNetwork(x = step1$condcor,
                        modules = modules$weightsdf, corthresh = 0.2, show_gene_names = T,  
@@ -428,7 +428,7 @@ dev.off()
 
 ### attribution plots --------------
 
-svg("/R/nanostring7/insitucor/results/attribution matrix transposed.svg", height = 8, width = 14)
+svg("./results/attribution matrix transposed.svg", height = 8, width = 14)
 pheatmap(t(attribution$involvescores),
          border_color = NA, legend = F,
          col = colorRampPalette(c("white","darkblue"))(100),
@@ -440,7 +440,7 @@ p1 = pheatmap(attribution$attributionmats[[name]], main = name,
               col = colorRampPalette(c("white","darkblue"))(100),
               breaks = seq(0,1,length.out=101))
 
-svg(paste0("/R/nanostring7/insitucor/results/attribution for ", name, ".svg"), width = 6, height = 7)
+svg(paste0("./results/attribution for ", name, ".svg"), width = 6, height = 7)
 pheatmap(attribution$attributionmats[[name]][p1$tree_row$order, p1$tree_col$order],
          border_color = NA, 
          cluster_rows = F, cluster_cols = F,
@@ -450,7 +450,7 @@ pheatmap(attribution$attributionmats[[name]][p1$tree_row$order, p1$tree_col$orde
 dev.off()
 
 
-pdf("/R/nanostring7/insitucor/results/attributionmats.pdf")
+pdf("./results/attributionmats.pdf")
 for (name in names(attribution$attributionmats)) {
   pheatmap(attribution$attributionmats[[name]],
            main = name,
@@ -460,7 +460,7 @@ for (name in names(attribution$attributionmats)) {
 dev.off()
 
 
-load("/R/nanostring7/insitucor/CellChatDB.human.rda") # (from https://github.com/sqjin/CellChat/blob/master/data/CellChatDB.human.rda)
+load("./insitucor/CellChatDB.human.rda") # (from https://github.com/sqjin/CellChat/blob/master/data/CellChatDB.human.rda)
 ligands = intersect(unique(CellChatDB.human$interaction$ligand), colnames(raw))
 receptors = intersect(unique(CellChatDB.human$interaction$receptor), colnames(raw))
 lrpairs = CellChatDB.human$interaction[, c("ligand", "receptor")]
@@ -469,12 +469,12 @@ lrpairs = lrpairs[is.element(lrpairs[,1], colnames(raw)) & is.element(lrpairs[,2
 lrpairs = lrpairs[lrpairs[,1] != lrpairs[,2], ]
 
 
-step1 = readRDS(file = "/R/nanostring7/insitucor/processed_data/step1.RDS")
-modules <- readRDS("/R/nanostring7/insitucor/processed_data/modules.RDS")
-scores <- readRDS("/R/nanostring7/insitucor/processed_data/scores.RDS")
-attribution = readRDS("/R/nanostring7/insitucor/processed_data/attribution.RDS")
-rawcor = readRDS("/R/nanostring7/insitucor/processed_data/rawcor.RDS")
-unroundedstep1 = readRDS(file = "/R/nanostring7/insitucor/processed_data/unroundedstep1.RDS")
+step1 = readRDS(file = "./processed_data/step1.RDS")
+modules <- readRDS("./processed_data/modules.RDS")
+scores <- readRDS("./processed_data/scores.RDS")
+attribution = readRDS("./processed_data/attribution.RDS")
+rawcor = readRDS("./processed_data/rawcor.RDS")
+unroundedstep1 = readRDS(file = "./processed_data/unroundedstep1.RDS")
 
 
 # get condcor
@@ -488,7 +488,7 @@ ligstep1 <- calcSpatialCor(counts = norm[, ligands],
                            roundcortozero = 1e-4,
                            max_cells = 10000,
                            verbose = FALSE)
-saveRDS(ligstep1, file = "/R/nanostring/insitucor/processed_data/ligstep1.RDS")
+saveRDS(ligstep1, file = "./processed_data/ligstep1.RDS")
 
 # get modules:
 lmods <- defineModules(condcor = ligstep1$condcor, 
@@ -516,21 +516,21 @@ ligattribution <- cellTypeAttribution(
   neighbors = ligstep1$neighbors,
   nsub = 1000,
   verbose = TRUE)
-saveRDS(ligattribution, file = "/R/nanostring7/insitucor/processed_data/ligattribution.RDS")
-ligattribution = readRDS("/R/nanostring7/insitucor/processed_data/ligattribution.RDS")
+saveRDS(ligattribution, file = "./processed_data/ligattribution.RDS")
+ligattribution = readRDS("./processed_data/ligattribution.RDS")
 
 
 p1 = pheatmap(ligattribution$involvescores,
               col = colorRampPalette(c("white", "darkblue"))(100),
               breaks = seq(0,0.8,length.out=101))
-svg("/R/nanostring7/insitucor/results/fig 2b - attrib heatmap.svg", width = 8, height = 6)
+svg("./results/fig 2b - attrib heatmap.svg", width = 8, height = 6)
 pheatmap(ligattribution$involvescores[p1$tree_row$order, p1$tree_col$order],
          cluster_rows = F, cluster_cols = F,
          col = colorRampPalette(c("white", "darkblue"))(100),
          breaks = seq(0,0.8,length.out=101), legend = FALSE)
 dev.off()
 
-svg("/R/nanostring7/insitucor/results/fig 2a - network.svg")
+svg("./results/fig 2a - network.svg")
 par(mar = c(0,0,0,0))
 plotCorrelationNetwork(x = ligstep1$condcor,corthresh = 0.1, 
                        modules = lmods$weightsdf, show_gene_names = T)
@@ -539,7 +539,7 @@ dev.off()
 # spatial plots of ligand env scores:
 for (name in colnames(lscores$scores_env)) {
   
-  png(paste0("/R/nanostring7/insitucor/results/ligand modules env scores - ", name, ".png"), 
+  png(paste0("./results/ligand modules env scores - ", name, ".png"), 
       width = 12, height = 8, units= "in", res = 500)
   par(mar = c(0,0,2,0))
   plot(xy, pch =8, asp = 1, cex = 0.05, ylim = c(-7,0), 
@@ -570,7 +570,7 @@ abline(h = 0)
 text(lrrawcors, jitter(lrcors, amount = 0.106), names(lrcors), cex = 0.5)
 
 # histogram of cor values for all LR pairs, with lines at cor values for selected pairs
-svg("/R/nanostring7/insitucor/results/fig2f - LR cor histogram.svg", height = 3, width = 4)
+svg("./results/fig2f - LR cor histogram.svg", height = 3, width = 4)
 par(mar = c(4,4,0,1))
 hist(lrcors, breaks = 50, main = "", xlab = "Conditional correlation",
      ylab = "Number of L-R pairs", col = alpha("dodgerblue4", 0.75))
@@ -582,7 +582,7 @@ lrcors[order(lrcors, decreasing = T)[1:20]]
 lrcors_df <- data.frame(LR_Pair = names(lrcors), Correlation = lrcors)
 
 # Save as a CSV file
-write.csv(lrcors_df, file = "/R/nanostring7/insitucor/results/LRlist_all.csv", row.names = FALSE)
+write.csv(lrcors_df, file = "./results/LRlist_all.csv", row.names = FALSE)
 
 
 # pick 1-2 pairs, and show transcript plots:
@@ -604,7 +604,7 @@ gr <- igraph::graph_from_data_frame(lrpairs)
 
 gr0 <- InSituCor:::get_coregulation_network(cormat = step1$condcor[usegenes, usegenes], 
                                              corthresh = 0.1)
-svg("/R/nanostring7/insitucor/results/fig 2h - network around LR pair.svg", width = 7, height = 7)
+svg("./results/fig 2h - network around LR pair.svg", width = 7, height = 7)
 par(mar = c(0,0,0,0))
 igraph::plot.igraph(gr0, 
                     vertex.label = unlist(list(NA, names(igraph::V(gr0)))[1 + TRUE]), 
@@ -617,7 +617,7 @@ dev.off()
 
 # make a module score:
 gcscore = rowMeans(norm[, setdiff(usegenes, c("SPP1", "CD44"))])
-png(paste0("/R/nanostring7/insitucor/results/ligand modules env scores - ", name, ".png"),
+png(paste0("./results/ligand modules env scores - ", name, ".png"),
     width = 6, height = 4, units= "in", res = 2400)
 par(mar = c(0,0,0,0))
 plot(xy, pch =16, asp = 1, cex = 0.1, ylim = c(-7,0),
@@ -628,7 +628,7 @@ dev.off()
 
 
 
-png("/R/nanostring7/insitucor/results/fig2g12 - spatial plot of 2 genes.png", 
+png("./results/fig2g12 - spatial plot of 2 genes.png", 
     width = 6, height = 6, units= "in", res = 1200)
 par(mar = c(0,0,0,0))
 par(bg = "black")
@@ -659,7 +659,7 @@ name = "SPP1_CD44"
 gl = lrpairs[name, "ligand"]
 gr = lrpairs[name, "receptor"]
 
-png("/R/nanostring7/insitucor/results/fig2g - spatial plot of 2 genes.png", 
+png("./results/fig2g - spatial plot of 2 genes.png", 
     width = 6, height = 6, units= "in", res = 1200)
 par(mar = c(0,0,0,0))
 par(bg = "black")
@@ -684,7 +684,7 @@ lines(c(3, 6), rep(2.7,2), col = "white")
 text(2,1,"1 mm", cex = 0.8, col = "white")
 dev.off()
 
-png("/R/nanostring7/insitucor/results/fig2g2 - spatial plot of 2 genes.png", 
+png("./results/fig2g2 - spatial plot of 2 genes.png", 
     width = 6, height = 6, units= "in", res = 1200)
 par(mar = c(0,0,0,0))
 par(bg = "black")
