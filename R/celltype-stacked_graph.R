@@ -6,10 +6,10 @@ plan("multisession", workers = 10)
 DiscretePalette(32, palette = NULL, shuffle = FALSE)
 
 # Set working directory
-results_folder <- '/R/nanostring7/work2'
+results_folder <- './results'
 
 # Load the Seurat object
-seu.obj <- readRDS("/R/nanostring7/6 Analysis/Data objects/seurat_object.Rds")
+seu.obj <- readRDS(".data/seurat_object.Rds")
 
 # Change the name of "e" in nb_clus_4 to "B.cell.lineage"
 seu.obj@meta.data$nb_clus_4[which(seu.obj@meta.data$nb_clus_4 == "e")] <- "B.cell.lineage"
