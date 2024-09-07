@@ -11,7 +11,7 @@ library(SeuratDisk)
 library(InSituCor)
 
 # Load Giotto object
-load("C:/R/nanostring7/6 Analysis/Data objects/complete_giotto_object_PostAnalysis.RData")
+load(".data/complete_giotto_object_PostAnalysis.RData")
 
 #change the name of "monocyte" in nb_clus_4 to "neutrophil".
 gem@cell_metadata$rna$nb_clus_4[which(gem@cell_metadata$rna$nb_clus_4 == "monocyte")] <- "neutrophil"
@@ -59,7 +59,7 @@ res <- insitucor(
 )
 
 # set working directory
-results_folder = '/R/nanostring7/insitucor/results'
+results_folder = './results'
 
 # Check the class of 'raw'
 class(raw)
