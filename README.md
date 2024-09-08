@@ -1,5 +1,5 @@
 # Lung CosMx analysis
- ![fig](C:\R\nanostring7\env_matrix_crop.png)
+ ![fig](./env_matrix_crop.png)
 ##Features
 
 morphology (immunostaining):
