@@ -1,5 +1,5 @@
 # Lung CosMx analysis
- ![fig](./env_matrix_crop.png)
+ ![fig](./Lung_CosMx_analysis/env_matrix_crop.png)
 ##Features
 
 morphology (immunostaining):
