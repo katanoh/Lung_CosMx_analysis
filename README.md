@@ -1,8 +1,9 @@
 # Lung CosMx analysis
  ![fig](./R/env_matrix_crop.png)
+
 ##Features
 
-morphology (immunostaining):
+###morphology (immunostaining):
 
 B2M/CD298, PanCK, CD45, CD3, DAPI
 
