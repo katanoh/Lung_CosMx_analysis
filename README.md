@@ -3,9 +3,11 @@
 
 ## Features
 
-### Morphology (immunostaining):
+### Morphology (immunostaining)
 
 * B2M/CD298, PanCK, CD45, CD3, DAPI
+
+### Panel
 
 * CosMx™ Human Universal Cell Characterization RNA Panel (1000-plex)
 
