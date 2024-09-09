@@ -1,5 +1,5 @@
 # Lung CosMx analysis
-![fig](./R/env_matrix_crop.png)
+![fig](./env_matrix_crop.png)
 
 ## Features
 
